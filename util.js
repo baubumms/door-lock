@@ -1,4 +1,4 @@
-export function randomBuffer(n) {
+exports.randomBuffer = function randomBuffer(n) {
     const data = Buffer.allocUnsafe(n);
     var random = 0;
     for ( var i = 0; i < n; i++ ) {
