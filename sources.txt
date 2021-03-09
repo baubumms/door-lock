@@ -1,0 +1,5 @@
+Mifare Classic Documentation
+https://shop.sonmicro.com/Downloads/MIFARECLASSIC-UM.pdf
+
+npm nfc-pcsc
+https://www.npmjs.com/package/nfc-pcsc#flow-of-handling-tags
