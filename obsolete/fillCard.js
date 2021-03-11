@@ -2,7 +2,7 @@ const { NFC, TAG_ISO_14443_3, TAG_ISO_14443_4, KEY_TYPE_A, KEY_TYPE_B} = require
 const nfc = new NFC(); // optionally you can pass logger
 const prettyLogger = require('pretty-logger');
 const pretty = new prettyLogger();
-const { randomBuffer } = require('./util/util');
+const { randomBuffer } = require('../util/util');
 
 nfc.on('reader', reader => {
 
