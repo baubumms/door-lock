@@ -3,6 +3,9 @@ const nfc = new NFC(); // optionally you can pass logger
 const prettyLogger = require('pretty-logger');
 const pretty = new prettyLogger();
 
+const nSectors = 16;
+const nBlocks = 4;
+
 nfc.on('reader', reader => {
 	console.log(`${reader.reader.name}  device attached`);
 
@@ -31,22 +34,29 @@ nfc.on('reader', reader => {
 			return;
 		}
 
+		var dump = new Array(nSectors);
+
 		pretty.info(`card detected`, card);
         const key = 'FFFFFFFFFFFF'; 
 		const keyType = KEY_TYPE_A;
 		try {
 
-            for(var sektor = 0; sektor < 16; sektor++){
-                await reader.authenticate(sektor * 4, keyType, key);
-                pretty.info(`sektor ${sektor}`)
+            for(var sector = 0; sector < nSectors; sector++){
+                await reader.authenticate(sector * 4, keyType, key);
+                // pretty.info(`sector ${sector}`)
 
+				sectorDump = new Array(nBlocks);
+				dump[sector] = sectorDump;
                 for(var b = 0; b < 4; b++){
-                    var block = sektor * 4 + b;
+                    var block = sector * 4 + b;
                     const data = await reader.read(block, 16, 16); // blockSize=16 must specified for MIFARE Classic cards
-                    pretty.info(`Block ${block}`, data);
+					sectorDump[b] = data;
+                    // pretty.info(`Block ${block}`, data);
                     const payload = data.readInt32BE(0);
                 }
             }
+
+			pretty.info("dump", dump);
 
 		} catch (err) {
 			pretty.error(`error`, reader, err);

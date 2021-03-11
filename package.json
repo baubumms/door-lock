@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "lowdb": "^1.0.0",
     "pretty-logger": "^0.1.2",
     "sqlite3": "^5.0.2"
   }

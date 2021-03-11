@@ -3,3 +3,12 @@ https://shop.sonmicro.com/Downloads/MIFARECLASSIC-UM.pdf
 
 npm nfc-pcsc
 https://www.npmjs.com/package/nfc-pcsc#flow-of-handling-tags
+
+Mifare Classic Attack via ProxmarkIII
+https://link.springer.com/content/pdf/10.1007%2F978-3-540-85893-5_20.pdf
+
+Mifare Classic Attack Possibilities
+https://sar.informatik.hu-berlin.de/research/publications/SAR-PR-2008-21/SAR-PR-2008-21_.pdf
+
+Access Bit Calculator
+http://calc.gmss.ru/Mifare1k/
