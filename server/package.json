@@ -11,6 +11,7 @@
   "dependencies": {
     "lowdb": "^1.0.0",
     "pretty-logger": "^0.1.2",
+    "serialport": "^9.0.7",
     "sqlite3": "^5.0.2"
   }
 }
