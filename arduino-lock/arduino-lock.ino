@@ -1,41 +1,54 @@
 #define OPEN_PIN D0
 #define CLOSE_PIN D1
 
+#define OPEN_CODE 1
+#define CLOSED_CODE 0
+
+#define BAUD_RATE 115200
+
 bool state = false;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(BAUD_RATE);
   initPin(OPEN_PIN);
   initPin(CLOSE_PIN);
-
 }
 
 void loop() {
   if (Serial.available()) {
     String input = Serial.readString();
-    if(input == "open"){
-        simulatePress(OPEN_PIN);
-        state = true;
-        Serial.println(0x00);
-    }else if(input == "close"){
-        simulatePress(CLOSE_PIN);
-        state = false;
-        Serial.println(0x11);
-    }else if(input == "toggle"){
+    if(input.indexOf("open") >= 0){
+       open();
+    }else if(input.indexOf("close") >= 0){
+        close();
+    }else if(input.indexOf("toggle") >= 0){
         if(state)
-          simulatePress(CLOSE_PIN);
+          close();
         else
-          simulatePress(OPEN_PIN);
-        state = !state;
-        Serial.println(0x22);
+          open();
     }else if(input == "status"){
-      Serial.println(state);
+      if(state)
+        Serial.print(OPEN_CODE);
+      else
+        Serial.print(CLOSED_CODE);
     }
   }
 }
 
+void open(){
+    simulatePress(OPEN_PIN);
+    state = true;
+    Serial.print(OPEN_CODE);
+}
+
+void close(){
+  simulatePress(CLOSE_PIN);
+  state = false;
+  Serial.print(CLOSED_CODE);
+}
+
 void simulatePress(int pin){
-  digitalWrite(pin,LOW);
+  digitalWrite(pin, LOW);
   delay(300);
   digitalWrite(pin, HIGH);
 }
