@@ -12,6 +12,10 @@ void setup() {
   Serial.begin(BAUD_RATE);
   initPin(OPEN_PIN);
   initPin(CLOSE_PIN);
+  
+  close();
+  delay(1000);
+  close();
 }
 
 void loop() {

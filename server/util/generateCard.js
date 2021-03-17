@@ -1,4 +1,4 @@
-const { randomBuffer } = require('./util');
+const { randomBuffer } = require(__dirname + '/util');
 
 const nSectors = 16;
 const nBlocks = 4;

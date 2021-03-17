@@ -1,8 +1,8 @@
 const { NFC, TAG_ISO_14443_3, TAG_ISO_14443_4, KEY_TYPE_A, KEY_TYPE_B} = require('nfc-pcsc');
 const nfc = new NFC(); // optionally you can pass logger
 const pretty = require('pretty-logger')();
-const db = require('./util/db');
-const lock = require('./util/lock');
+const db = require(__dirname + '/util/db');
+const lock = require(__dirname + '/util/lock');
 //const util = require('util'); npm module util
 
 async function onCardHandler(reader, card){

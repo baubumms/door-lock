@@ -36,6 +36,8 @@ class Lock{
                 databits: 8,
                 parity: 'none'
             });
+
+            setTimeout(() => this.close(), 1000);
     
             this.port.on('data', (msg) => this.onSerialInput(msg));
             this.port.on('error', (error) => pretty.error("Serial Port onError: ",error));

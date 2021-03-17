@@ -2,7 +2,7 @@ const { NFC, TAG_ISO_14443_3, TAG_ISO_14443_4, KEY_TYPE_A, KEY_TYPE_B} = require
 const nfc = new NFC(); // optionally you can pass logger
 const pretty = require('pretty-logger')();
 const generateCard = require('./util/generateCard');
-const db = require('./util/db');
+const db = require(__dirname + '/util/db');
 
 const ownerId = process.argv[2];
 pretty.info("Creating Card for OwnerId: ", ownerId);
