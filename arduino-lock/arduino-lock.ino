@@ -1,5 +1,6 @@
 #define OPEN_PIN D0
-#define CLOSE_PIN D1
+#define CLOSE_PIN D2
+#define TOGGLE_BUTTON_PIN D7
 
 #define OPEN_CODE 1
 #define CLOSED_CODE 0
@@ -10,8 +11,15 @@ bool state = false;
 
 void setup() {
   Serial.begin(BAUD_RATE);
+
+  //Button emulation
   initPin(OPEN_PIN);
+  groundPin(D1);
   initPin(CLOSE_PIN);
+  groundPin(D3);
+
+  //Toggle Button
+  pinMode(TOGGLE_BUTTON_PIN, INPUT_PULLUP);
   
   close();
   delay(1000);
@@ -19,6 +27,8 @@ void setup() {
 }
 
 void loop() {
+
+  //Serial Communication
   if (Serial.available()) {
     String input = Serial.readString();
     if(input.indexOf("open") >= 0){
@@ -26,10 +36,7 @@ void loop() {
     }else if(input.indexOf("close") >= 0){
         close();
     }else if(input.indexOf("toggle") >= 0){
-        if(state)
-          close();
-        else
-          open();
+        toggle();
     }else if(input == "status"){
       if(state)
         Serial.print(OPEN_CODE);
@@ -37,6 +44,23 @@ void loop() {
         Serial.print(CLOSED_CODE);
     }
   }
+
+  //Toggle Button
+  if(digitalRead(TOGGLE_BUTTON_PIN) == LOW){
+    delay(3);
+    if( !(digitalRead(TOGGLE_BUTTON_PIN) == LOW) )
+      return;
+
+    toggle();
+    delay(2000);
+  }
+}
+
+void toggle(){
+  if(state)
+    close();
+  else
+    open();
 }
 
 void open(){
@@ -52,12 +76,17 @@ void close(){
 }
 
 void simulatePress(int pin){
-  digitalWrite(pin, LOW);
-  delay(300);
   digitalWrite(pin, HIGH);
+  delay(300);
+  digitalWrite(pin, LOW);
 }
 
 void initPin(int pin){
   pinMode(pin, OUTPUT);
-  digitalWrite(pin, HIGH);
+  digitalWrite(pin, LOW);
+}
+
+void groundPin(int pin){
+  pinMode(pin, OUTPUT);
+  digitalWrite(pin, LOW);
 }
