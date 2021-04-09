@@ -1,5 +1,4 @@
 const { NFC, TAG_ISO_14443_3, TAG_ISO_14443_4, KEY_TYPE_A, KEY_TYPE_B} = require('nfc-pcsc');
-const nfc = new NFC(); // optionally you can pass logger
 const pretty = require('pretty-logger')();
 const db = require(__dirname + '/util/db');
 const lock = require(__dirname + '/util/lock');
@@ -47,24 +46,31 @@ async function onCardHandler(reader, card){
 		}
 }
 
-nfc.on('reader', reader => {
-	pretty.info(`${reader.reader.name}  device attached`);
+const initNFC = () => {
+	const nfc = new NFC(); // optionally you can pass logger
 
-	reader.on('card.off', card => {
-		pretty.info(`${reader.reader.name}  card removed`);
+	nfc.on('reader', reader => {
+		pretty.info(`${reader.reader.name}  device attached`);
+	
+		reader.on('card.off', card => {
+			pretty.info(`${reader.reader.name}  card removed`);
+		});
+	
+		reader.on('error', err => {
+			pretty.info(`${reader.reader.name}  an error occurred`, err);
+		});
+	
+		reader.on('end', () => {
+			pretty.info(`${reader.reader.name}  device removed`);
+			initNFC();
+		});
+	
+		reader.on('card', (card) => onCardHandler(reader, card));
 	});
-
-	reader.on('error', err => {
-		pretty.info(`${reader.reader.name}  an error occurred`, err);
+	
+	nfc.on('error', err => {
+		pretty.info('an error occurred', err);
 	});
+}
 
-	reader.on('end', () => {
-		pretty.info(`${reader.reader.name}  device removed`);
-	});
-
-    reader.on('card', (card) => onCardHandler(reader, card));
-});
-
-nfc.on('error', err => {
-	pretty.info('an error occurred', err);
-});
+initNFC();
